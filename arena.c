@@ -235,6 +235,21 @@ static void check_thp_state(void) {
 static pthread_mutex_t cheap_mutex = PTHREAD_MUTEX_INITIALIZER;
 static struct cheap *h = NULL;
 
+/**
+ * alloc_arena_mmap_dax()
+ *
+ * This function added by John Groves. It is uses cursor_heap, which sneaks in some
+ * significant functionality.
+ *
+ * If cursor heap will get arenas by mmaping daxdev, which can be any of the following
+ * provided you're using a recent enough version of cursor_heap:
+ *
+ * * dax devices (e.g. /dev/dax0.0 - and eventually cxl fabric-attached memory dax
+ *   devies
+ * * pmem devices (e.g. /dev/pmem0)
+ * * memory mapped files. This is of interest because the file in question could be
+ *   an fs-dax file, and even a famfs file if my time-machine is working.
+ */
 static void *alloc_arena_mmap_dax(size_t page_size, size_t arena_size,
 				  const char *daxdev)
 {
