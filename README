@@ -5,6 +5,17 @@ Multiload - a superset of multichase which runs latency, memory bandwidth, and l
 This fork of multichase adds the ability to test DAX memory, which could be
 any non-standard memory including nvdimm and CXL memory.
 
+The current version supports "specific memory". If you specify memory via the -d <mem>
+option, the memory can be any of the following:
+
+* Dax memory (e.g. /dev/dax0.0)
+* Pmem (e.g. /dev/pmem0.0)
+* File-backed memory (e.g. /path/to/file). This is mostly intended for fs-dax files, but
+  there might be other uses for it. The entire file will be mmapped as an arena. If the file
+  starts out empty, you won't get any memory. And if you use a regular file, you will be
+  testing the page cache, which might or might not remain populated dependign on the
+  relationship between the size of memory and the size of your file. Tester beware...
+
 * Back to the original content...
 
 1/ BUILD
